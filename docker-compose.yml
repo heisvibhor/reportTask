@@ -1,0 +1,27 @@
+services:
+  django:
+    image: django-docker:0.0.1
+    build: .
+    ports:
+     - "8000:8000"
+     - "5555:5555"
+    depends_on:
+      - db
+      - redis
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=vibhor
+      - POSTGRES_PASSWORD=vibhor
+      - POSTGRES_DB=reports
+    ports:
+      - "5432"
+  redis:
+    restart: unless-stopped
+    image: redis:7.0.5-alpine
+    expose:
+      - 6379
+volumes:
+  postgres_data:
